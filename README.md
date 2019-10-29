@@ -1,4 +1,4 @@
-# visicom-admin
+# Vue Template Admin
 
 ## Project setup
 ```
