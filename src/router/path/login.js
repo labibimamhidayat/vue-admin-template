@@ -1,4 +1,4 @@
-import login from '@/components/layouts/login.vue';
+const login = () => import(/* webpackChunkName: "login-chunks" */'@/components/layouts/login.vue');
 
 const path = {
     path: '/login',
