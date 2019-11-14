@@ -14,7 +14,7 @@ export default {
     name: 'welcomePage',
     data: () => ({
         title: 'Welcome To',
-        titleSecond: 'Admin Template Panel',
+        titleSecond: 'Visicom Admin Panel',
         titleThrid: 'How was your day?',
     }),
 };

@@ -43,7 +43,7 @@ export default {
     name: 'sideBar',
     data: () => ({
         CredentialsAPI: null,
-        titleSidebar: 'Template Admin Panel',
+        titleSidebar: 'Visicom Admin Panel',
         drawer: true,
         items: [
             { title: 'Home', icon: 'fas fa-home', to: '/' },
