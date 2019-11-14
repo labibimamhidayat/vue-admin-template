@@ -1,16 +1,21 @@
-import welcomeHomePage from '@/router/path/nestedPath/welcomeHomePage.router';
+import welcomeHomePage from '@/router/path/nested-routes/welcomeHomePage.router';
+import productPage from '@/router/path/nested-routes/productPage.router';
+import partnerPage from '@/router/path/nested-routes/partnerPage.router';
+import clientPage from '@/router/path/nested-routes/clientPage.router';
 
 const homeLayouts = () => import(/* webpackChunkName: "homeLayouts-chunks" */'@/components/layouts/home.vue');
 
 const path = {
     path: '/',
-    name: 'HomeLayout',
     component: homeLayouts,
     meta: {
         needAuthentication: true,
     },
     children: [
+        productPage,
         welcomeHomePage,
+        partnerPage,
+        clientPage,
     ],
 };
 

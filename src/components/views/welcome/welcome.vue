@@ -11,6 +11,7 @@
 </template>
 <script>
 export default {
+    name: 'welcomePage',
     data: () => ({
         title: 'Welcome To',
         titleSecond: 'Admin Template Panel',

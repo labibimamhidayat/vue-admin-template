@@ -25,7 +25,7 @@ class ConfigAxios {
             } else if (method === 'patch') {
                 result = await this.Axios.patch(url, data, options);
             } else if (method === 'delete') {
-                result = await this.Axios.delete(url, data, options);
+                result = await this.Axios.delete(url, { data }, options);
             } else {
                 // eslint-disable-next-line no-throw-literal
                 throw ('method not found');

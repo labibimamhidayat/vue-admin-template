@@ -10,6 +10,13 @@ const opts = {
     icons: {
         iconfont: 'fa', // default - only for display purposes
     },
+    theme: {
+        themes: {
+            light: {
+                error: '#C62828',
+            },
+        },
+    },
 };
 
 export default new Vuetify(opts);

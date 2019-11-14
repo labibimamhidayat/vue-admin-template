@@ -1,18 +1,18 @@
 <template>
     <v-row>
-        <confirm-dialog v-model="deleteConfirmDialog" type-confirm="delete" :confirm="deleteItems" :call-back-submit="onDeleteProduct" @reFetch="getProducts"></confirm-dialog>
-        <addEditDialogProduct v-model="addAndEditDialog" :is-edit="isEdit" :edit-attributes="editAttributes" @reFetch="getProducts"></addEditDialogProduct>
+        <confirm-dialog v-model="deleteConfirmDialog" type-confirm="delete" :confirm="deleteItems" :call-back-submit="onDeleteClients" @reFetch="getClients"></confirm-dialog>
+        <add-edit-dialog-clients v-model="addAndEditDialog" :is-edit="isEdit" :edit-attributes="editAttributes" @reFetch="getClients"></add-edit-dialog-clients>
         <v-col>
             <v-row>
                 <v-col>
-                    <v-btn color="success" @click="openDialogAddProduct">Tambah Produk Baru</v-btn>
+                    <v-btn color="success" @click="openDialogAddClients">Tambah Clients</v-btn>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <data-tables
                         :headers="headers"
-                        :items="productItems"
+                        :items="clientsItems"
                         :table-properties="tableProperties"
                         :loading="loadingTable"
                         @pagination="changePagination"
@@ -20,16 +20,15 @@
                         <template #body="{items}">
                             <tbody>
                                 <tr v-for="item in items" :key="item.id">
-                                    <td>{{ item.category_name }}</td>
+                                    <td>{{ item.name }}</td>
                                     <td>
                                         <img style="weight: 90px; height:90px;" :src="item.image.fullUrl">
                                     </td>
-                                    <td>{{ item.short_description }}</td>
                                     <td>
-                                        <v-btn color="primary" @click="openDialogEditProduct(item)" fab icon x-small>
+                                        <v-btn color="primary" @click="openDialogEditClients(item)" fab icon x-small>
                                             <v-icon>fas fa-pencil-alt</v-icon>
                                         </v-btn>
-                                        <v-btn color="error" @click="confirmDeleteProduct({name: item.category_name, id: item.id})" fab icon x-small>
+                                        <v-btn color="error" @click="confirmDeleteClients({name: item.name, id: item.id})" fab icon x-small>
                                             <v-icon>fas fa-trash</v-icon>
                                         </v-btn>
                                     </td>
@@ -43,24 +42,24 @@
     </v-row>
 </template>
 <script>
-import ProductsAPI from '@/api/ProductsAPI';
+import ClientsAPI from '@/api/ClientsAPI';
 import tableProperties from '@/mixins/tableProperties.mixins';
 
 const dataTables = () => import('@/components/reuseable/dataTable');
-const addEditDialogProduct = () => import('@/components/views/products/addEditDialogProduct');
+const addEditDialogClients = () => import('@/components/views/clients/addEditDialogClients');
 const confirmDialog = () => import('@/components/reuseable/confirmDialog');
 export default {
-    name: 'viewProduct',
+    name: 'viewClients',
     components: {
         dataTables,
-        addEditDialogProduct,
+        addEditDialogClients,
         confirmDialog,
     },
     mixins: [tableProperties],
     data: () => ({
         headers: [
             {
-                text: 'Product Name',
+                text: 'Client Name',
                 sortable: false,
             },
             {
@@ -68,22 +67,18 @@ export default {
                 sortable: false,
             },
             {
-                text: 'Descriptions',
-                sortable: false,
-            },
-            {
                 text: 'Actions',
                 sortable: false,
             },
         ],
-        productItems: [],
+        clientsItems: [],
         deleteItems: {
             title: '',
             body: '',
             id: '',
         },
         editAttributes: {},
-        productApi: null,
+        clientsAPI: null,
         addAndEditDialog: false,
         deleteConfirmDialog: false,
         isEdit: false,
@@ -92,17 +87,17 @@ export default {
         this.initApi();
     },
     mounted() {
-        this.getProducts();
+        this.getClients();
     },
     methods: {
         initApi() {
-            this.productApi = new ProductsAPI();
+            this.clientsAPI = new ClientsAPI();
         },
-        async getProducts() {
+        async getClients() {
             try {
                 this.loadingTable = true;
-                const result = await this.productApi.getProducts(this.tableProperties);
-                this.productItems = result.data.result;
+                const result = await this.clientsAPI.getClients(this.tableProperties);
+                this.clientsItems = result.data.result;
                 this.setTableProperties(result.data.pagination);
             } catch (error) {
                 this.$error(error);
@@ -111,28 +106,28 @@ export default {
             }
         },
         getDataByPagination() {
-            this.getProducts();
+            this.getClients();
         },
-        openDialogAddProduct() {
+        openDialogAddClients() {
             this.isEdit = false;
             this.addAndEditDialog = true;
         },
-        openDialogEditProduct(objectProduct) {
+        openDialogEditClients(objectProduct) {
             this.isEdit = true;
             this.editAttributes = { ...objectProduct };
             this.addAndEditDialog = true;
         },
-        confirmDeleteProduct(deleteItems) {
+        confirmDeleteClients(deleteItems) {
             this.deleteItems = {
-                title: `Hapus Produk ${deleteItems.name}`,
-                body: 'Apakah anda yakin akan menghapus produk ini?',
+                title: `Hapus Client ${deleteItems.name}`,
+                body: 'Apakah anda yakin akan menghapus client ini?',
                 id: deleteItems.id,
             };
             this.deleteConfirmDialog = true;
         },
-        async onDeleteProduct() {
+        async onDeleteClients() {
             try {
-                await this.productApi.deleteProducts(this.deleteItems.id);
+                await this.clientsAPI.deleteClients(this.deleteItems.id);
                 return Promise.resolve(true);
             } catch (error) {
                 return Promise.reject(error);

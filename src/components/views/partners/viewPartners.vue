@@ -1,18 +1,18 @@
 <template>
     <v-row>
-        <confirm-dialog v-model="deleteConfirmDialog" type-confirm="delete" :confirm="deleteItems" :call-back-submit="onDeleteProduct" @reFetch="getProducts"></confirm-dialog>
-        <addEditDialogProduct v-model="addAndEditDialog" :is-edit="isEdit" :edit-attributes="editAttributes" @reFetch="getProducts"></addEditDialogProduct>
+        <confirm-dialog v-model="deleteConfirmDialog" type-confirm="delete" :confirm="deleteItems" :call-back-submit="onDeletePartners" @reFetch="getPartners"></confirm-dialog>
+        <add-edit-dialog-partners v-model="addAndEditDialog" :is-edit="isEdit" :edit-attributes="editAttributes" @reFetch="getPartners"></add-edit-dialog-partners>
         <v-col>
             <v-row>
                 <v-col>
-                    <v-btn color="success" @click="openDialogAddProduct">Tambah Produk Baru</v-btn>
+                    <v-btn color="success" @click="openDialogAddPartners">Tambah Partner Baru</v-btn>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <data-tables
                         :headers="headers"
-                        :items="productItems"
+                        :items="partnerItems"
                         :table-properties="tableProperties"
                         :loading="loadingTable"
                         @pagination="changePagination"
@@ -20,16 +20,24 @@
                         <template #body="{items}">
                             <tbody>
                                 <tr v-for="item in items" :key="item.id">
-                                    <td>{{ item.category_name }}</td>
+                                    <td>{{ item.name }}</td>
                                     <td>
                                         <img style="weight: 90px; height:90px;" :src="item.image.fullUrl">
                                     </td>
-                                    <td>{{ item.short_description }}</td>
                                     <td>
-                                        <v-btn color="primary" @click="openDialogEditProduct(item)" fab icon x-small>
+                                        <img style="weight: 90px; height:90px;" :src="item.logo.fullUrl">
+                                    </td>
+                                    <td>{{ item.description | sanitize }}</td>
+                                    <td>
+                                        <template v-for="(product, index) in item.service">
+                                            <v-chip small class="ma-1" :key="index">{{product.category.category_name}}</v-chip>
+                                        </template>
+                                    </td>
+                                    <td>
+                                        <v-btn color="primary" @click="openDialogEditPartners(item)" fab icon x-small>
                                             <v-icon>fas fa-pencil-alt</v-icon>
                                         </v-btn>
-                                        <v-btn color="error" @click="confirmDeleteProduct({name: item.category_name, id: item.id})" fab icon x-small>
+                                        <v-btn color="error" @click="confirmDeletePartners({name: item.name, id: item.id})" fab icon x-small>
                                             <v-icon>fas fa-trash</v-icon>
                                         </v-btn>
                                     </td>
@@ -43,24 +51,28 @@
     </v-row>
 </template>
 <script>
-import ProductsAPI from '@/api/ProductsAPI';
+import PartnersAPI from '@/api/PartnersAPI';
 import tableProperties from '@/mixins/tableProperties.mixins';
+import sanitizeHTML from '@/helper/sanitizeHTML';
 
 const dataTables = () => import('@/components/reuseable/dataTable');
-const addEditDialogProduct = () => import('@/components/views/products/addEditDialogProduct');
+const addEditDialogPartners = () => import('@/components/views/partners/addEditDialogPartners');
 const confirmDialog = () => import('@/components/reuseable/confirmDialog');
 export default {
-    name: 'viewProduct',
+    name: 'viewPartners',
     components: {
         dataTables,
-        addEditDialogProduct,
+        addEditDialogPartners,
         confirmDialog,
     },
     mixins: [tableProperties],
+    filters: {
+        sanitize: html => sanitizeHTML(html),
+    },
     data: () => ({
         headers: [
             {
-                text: 'Product Name',
+                text: 'Name',
                 sortable: false,
             },
             {
@@ -68,7 +80,15 @@ export default {
                 sortable: false,
             },
             {
-                text: 'Descriptions',
+                text: 'Logo',
+                sortable: false,
+            },
+            {
+                text: 'Description',
+                sortable: false,
+            },
+            {
+                text: 'Product',
                 sortable: false,
             },
             {
@@ -76,14 +96,14 @@ export default {
                 sortable: false,
             },
         ],
-        productItems: [],
+        partnerItems: [],
         deleteItems: {
             title: '',
             body: '',
             id: '',
         },
         editAttributes: {},
-        productApi: null,
+        partnersAPI: null,
         addAndEditDialog: false,
         deleteConfirmDialog: false,
         isEdit: false,
@@ -92,17 +112,17 @@ export default {
         this.initApi();
     },
     mounted() {
-        this.getProducts();
+        this.getPartners();
     },
     methods: {
         initApi() {
-            this.productApi = new ProductsAPI();
+            this.partnersAPI = new PartnersAPI();
         },
-        async getProducts() {
+        async getPartners() {
             try {
                 this.loadingTable = true;
-                const result = await this.productApi.getProducts(this.tableProperties);
-                this.productItems = result.data.result;
+                const result = await this.partnersAPI.getPartners(this.tableProperties);
+                this.partnerItems = result.data.result;
                 this.setTableProperties(result.data.pagination);
             } catch (error) {
                 this.$error(error);
@@ -111,28 +131,28 @@ export default {
             }
         },
         getDataByPagination() {
-            this.getProducts();
+            this.getPartners();
         },
-        openDialogAddProduct() {
+        openDialogAddPartners() {
             this.isEdit = false;
             this.addAndEditDialog = true;
         },
-        openDialogEditProduct(objectProduct) {
+        openDialogEditPartners(objectPartners) {
             this.isEdit = true;
-            this.editAttributes = { ...objectProduct };
+            this.editAttributes = { ...objectPartners };
             this.addAndEditDialog = true;
         },
-        confirmDeleteProduct(deleteItems) {
+        confirmDeletePartners(deleteItems) {
             this.deleteItems = {
-                title: `Hapus Produk ${deleteItems.name}`,
-                body: 'Apakah anda yakin akan menghapus produk ini?',
+                title: `Hapus Partner ${deleteItems.name}`,
+                body: 'Apakah anda yakin akan menghapus partner ini?',
                 id: deleteItems.id,
             };
             this.deleteConfirmDialog = true;
         },
-        async onDeleteProduct() {
+        async onDeletePartners() {
             try {
-                await this.productApi.deleteProducts(this.deleteItems.id);
+                await this.partnersAPI.deletePartners(this.deleteItems.id);
                 return Promise.resolve(true);
             } catch (error) {
                 return Promise.reject(error);

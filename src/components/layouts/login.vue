@@ -49,6 +49,7 @@
 import CredentialsAPI from '@/api/CredentialsAPI';
 
 export default {
+    name: 'login',
     data: () => ({
         credentialsAPI: null,
         login: {
