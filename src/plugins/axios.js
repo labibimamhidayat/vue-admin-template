@@ -5,7 +5,7 @@ class ConfigAxios {
         this.Axios = AxiosREST.create({
             baseURL: process.env.VUE_APP_ROOT_API,
             headers: {
-                Authorization: localStorage.getItem('token'),
+                AuthToken: localStorage.getItem('token'),
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
             },
