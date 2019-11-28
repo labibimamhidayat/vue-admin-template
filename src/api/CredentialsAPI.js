@@ -17,6 +17,14 @@ class Credentials extends Axios {
     userLogout() {
         return this.get(`${this.uri}/logout`);
     }
+
+    updatePassword(password) {
+        return this.put(`${this.uri}/password`, password);
+    }
+
+    updateProfile(profile) {
+        return this.put(`${this.uri}/profile`, profile);
+    }
 }
 
 export default Credentials;

@@ -11,7 +11,7 @@ const path = {
             name: 'viewPartners',
             component: viewPartners,
             meta: {
-                title: 'Daftar Partner',
+                title: 'List Of Partners',
             },
         },
     ],

@@ -6,6 +6,7 @@ import {
     min_value as minValue,
     min,
     max,
+    email,
 } from 'vee-validate/dist/rules';
 import { imageHaveError, requiredRichText } from './custom-vee-validate/extendedRules';
 
@@ -20,6 +21,7 @@ const dictionary = {
         },
     },
 };
+extend('email', email);
 extend('required', required);
 extend('min_value', minValue);
 extend('min', min);

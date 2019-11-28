@@ -47,6 +47,7 @@
 </template>
 <script>
 import CredentialsAPI from '@/api/CredentialsAPI';
+import { setTokenToLocalStorage } from '@/helper/saveToken';
 
 export default {
     name: 'login',
@@ -74,7 +75,7 @@ export default {
             }
         },
         setToken(token) {
-            localStorage.setItem('token', `${token.token_type} ${token.access_token}`);
+            setTokenToLocalStorage(token);
         },
         pushToHome() {
             window.location.href = '/';

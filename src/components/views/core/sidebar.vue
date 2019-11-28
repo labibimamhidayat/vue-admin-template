@@ -29,11 +29,6 @@
           </v-list-item>
         </template>
       </v-list>
-       <template v-slot:append>
-        <div class="pa-2">
-          <v-btn block @click="logout">Logout</v-btn>
-        </div>
-      </template>
     </v-navigation-drawer>
 </template>
 <script>
@@ -47,11 +42,11 @@ export default {
         drawer: true,
         items: [
             { title: 'Home', icon: 'fas fa-home', to: '/' },
-            { title: 'Product', icon: 'fas fa-boxes', to: '/products' },
+            { title: 'Products', icon: 'fas fa-boxes', to: '/products' },
             { title: 'Partners', icon: 'fas fa-handshake', to: '/partners' },
             { title: 'Clients', icon: 'fas fa-building', to: '/clients' },
-            // { title: 'Emails', icon: 'fas fa-envelope' },
-            { title: 'Admin', icon: 'fas fa-user-shield' },
+            { title: 'Emails', icon: 'fas fa-envelope', to: '/emails' },
+            // { title: 'Admin', icon: 'fas fa-user-shield' },
         ],
     }),
     mounted() {
@@ -67,22 +62,6 @@ export default {
         },
         changeDrawer(state) {
             this.drawer = state;
-        },
-        async logout() {
-            try {
-                await this.CredentialsAPI.userLogout();
-                this.clearLocalStorage();
-                this.pushToLogin();
-            } catch (error) {
-                // eslint-disable-next-line no-alert
-                alert('Terjadi Kesalahan Silahkan Ulangi Kembali');
-            }
-        },
-        clearLocalStorage() {
-            localStorage.clear();
-        },
-        pushToLogin() {
-            window.location.href = '/login';
         },
     },
 };

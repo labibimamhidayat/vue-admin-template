@@ -1,19 +1,23 @@
 <template>
      <v-app-bar
-      color="deep-purple accent-4"
+      color="primary"
       dark
       app
     >
       <v-app-bar-nav-icon @click="changeDrawer"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
-      <v-toolbar-title>Welcome {{credits.name}}</v-toolbar-title>
+      <profile-menu></profile-menu>
     </v-app-bar>
 </template>
 <script>
 import { mapState } from 'vuex';
 
+const profileMenu = () => import('@/components/views/core/navbarComponent/profileMenu');
 export default {
     name: 'navBar',
+    components: {
+        profileMenu,
+    },
     data: () => ({
         drawer: true,
     }),

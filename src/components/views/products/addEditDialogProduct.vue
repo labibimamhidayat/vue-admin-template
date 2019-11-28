@@ -104,10 +104,10 @@ export default {
     },
     computed: {
         submitButtonText() {
-            return this.isEdit ? 'Ubah' : 'Simpan';
+            return this.isEdit ? 'Update' : 'Save';
         },
         headerText() {
-            return this.isEdit ? `Edit Produk ${this.editAttributes.category_name}` : 'Tambah Produk';
+            return this.isEdit ? `Edit Product ${this.editAttributes.category_name}` : 'Add Product';
         },
     },
     watch: {

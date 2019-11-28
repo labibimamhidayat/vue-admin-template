@@ -38,11 +38,11 @@ export default {
         },
         closeButtonText: {
             type: String,
-            default: 'Tutup',
+            default: 'Close',
         },
         submitButtonText: {
             type: String,
-            default: 'Simpan',
+            default: 'Save',
         },
         submitButtonColor: {
             type: String,

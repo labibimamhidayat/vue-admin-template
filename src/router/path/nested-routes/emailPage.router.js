@@ -1,17 +1,17 @@
 const children = () => import('@/components/views/core/childpage');
-const viewClients = () => import('@/components/views/clients/viewClients');
+const viewListEmail = () => import('@/components/views/email/viewListEmail');
 
 const path = {
-    path: 'clients',
+    path: 'emails',
     component: children,
-    redirect: '/clients/',
+    redirect: '/emails/',
     children: [
         {
             path: '/',
-            name: 'viewClients',
-            component: viewClients,
+            name: 'viewEmails',
+            component: viewListEmail,
             meta: {
-                title: 'List Of Clients',
+                title: 'List Of Emails',
             },
         },
     ],

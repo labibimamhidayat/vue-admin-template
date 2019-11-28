@@ -11,7 +11,7 @@ const path = {
             name: 'viewProducts',
             component: viewProducts,
             meta: {
-                title: 'Daftar Produk',
+                title: 'List Of Products',
             },
         },
     ],
